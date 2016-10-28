@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Tagger", "Tagger\Tagger.fsproj", "{1B0196B1-69DD-4F92-8E37-7041A6613C8F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{73D3CC19-5C24-48E8-85B8-28EEFC6D9A90} = {73D3CC19-5C24-48E8-85B8-28EEFC6D9A90}
+	EndProjectSection
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "TaggerControls", "TaggerControls\TaggerControls.fsproj", "{73D3CC19-5C24-48E8-85B8-28EEFC6D9A90}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Test", "Test\Test.fsproj", "{C5FD6C3B-003E-4695-9F37-E6E758B2CBDF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1B0196B1-69DD-4F92-8E37-7041A6613C8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B0196B1-69DD-4F92-8E37-7041A6613C8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B0196B1-69DD-4F92-8E37-7041A6613C8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B0196B1-69DD-4F92-8E37-7041A6613C8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73D3CC19-5C24-48E8-85B8-28EEFC6D9A90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73D3CC19-5C24-48E8-85B8-28EEFC6D9A90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73D3CC19-5C24-48E8-85B8-28EEFC6D9A90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73D3CC19-5C24-48E8-85B8-28EEFC6D9A90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5FD6C3B-003E-4695-9F37-E6E758B2CBDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5FD6C3B-003E-4695-9F37-E6E758B2CBDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5FD6C3B-003E-4695-9F37-E6E758B2CBDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5FD6C3B-003E-4695-9F37-E6E758B2CBDF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		VisualSVNWorkingCopyRoot = .
+	EndGlobalSection
+EndGlobal

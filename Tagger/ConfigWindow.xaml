@@ -1,0 +1,105 @@
+﻿<!--Copyright 2014 FSharpN00b.
+This file is part of Tagger.
+
+Tagger is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Tagger is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Tagger.  If not, see<http://www.gnu.org/licenses/> .
+
+Tagger uses AvalonEdit, which is copyright 2014 AlphaSierraPapa for the SharpDevelop Team under the terms of the MIT License. For more information see www.avalonedit.net.-->
+<!--Always rebuild solution when you change XAML.-->
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        SizeToContent="WidthAndHeight">
+    <Window.Resources>
+        <Style TargetType="Label">
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="HorizontalContentAlignment" Value="Right" />
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="Margin" Value="10, 0, 10, 0" />
+        </Style>
+        <Style TargetType="TextBox" x:Key="multi-value">
+<!--Apparently the default TextBox style is ignored when we apply this style, so we repeat these properties.-->
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="Margin" Value="10, 0, 10, 0" />
+            <Setter Property="MinLines" Value="3" />
+            <Setter Property="AcceptsReturn" Value="True" />
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="MinWidth" Value="50" />
+            <Setter Property="Margin" Value="5" />
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+<!--Auto means use as much space as needed by the controls. Star means use whatever space remains, divided into the portions specified (i.e. two controls that each use "1*" will split the space evenly).-->
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+<!--This setting is currently not used.-->
+<!--
+        <Label Grid.Row="0" Grid.Column="0">Mouse Hover Delay (in milliseconds, whole number, minimum 1000)</Label>
+        <TextBox Grid.Row="0" Grid.Column="1" Name="MouseHoverDelay" />
+-->
+        <Label Grid.Row="0" Grid.Column="0">Mouse Wheel Scroll Speed (lines per notch, must be whole number, minimum 1)</Label>
+        <TextBox Grid.Row="0" Grid.Column="1" Name="MouseScrollSpeed" />
+        <Label Grid.Row="1" Grid.Column="0">Drag Scroll Speed (lines per second, must be whole number, minimum 1)</Label>
+        <TextBox Grid.Row="1" Grid.Column="1" Name="DragScrollSpeed" />
+        <Label Grid.Row="2" Grid.Column="0">Margin Highlight Display Time (in milliseconds, must be whole number, minimum 1000)</Label>
+        <TextBox Grid.Row="2" Grid.Column="1" Name="MarginHighlightDisplayTime" />
+        <Label Grid.Row="3" Grid.Column="0">Font Size (must be whole number, minimum 1)</Label>
+        <TextBox Grid.Row="3" Grid.Column="1" Name="FontSize" />
+        <Label Grid.Row="4" Grid.Column="0">File Auto-Save Interval (in milliseconds, must be whole number, minimum 1000)</Label>
+        <TextBox Grid.Row="4" Grid.Column="1" Name="FileSaveDelay" />
+        <Label Grid.Row="5" Grid.Column="0">Tag Symbol (must be one character, not a letter or digit or whitespace)</Label>
+        <TextBox Grid.Row="5" Grid.Column="1" Name="TagSymbol" />
+<!--This setting is currently not used.-->
+<!--
+        <Label Grid.Row="6" Grid.Column="0">Project Auto-Save Interval (in milliseconds, must be whole number, minimum 1000)</Label>
+        <TextBox Grid.Row="6" Grid.Column="1" Name="ProjectSaveDelay" />
+-->
+        <Label Grid.Row="6" Grid.Column="0">Add On Server Host Address (must be valid IP address)</Label>
+        <TextBox Grid.Row="6" Grid.Column="1" Name="AddOnServerHost" />
+        <Label Grid.Row="7" Grid.Column="0">Add On Server Port Number (must be whole number, minimum 0, maximum 65535)</Label>
+        <TextBox Grid.Row="7" Grid.Column="1" Name="AddOnServerPort" />
+        
+        <Label Grid.Row="8" Grid.Column="0">Project Backup Folder</Label>
+        <TextBox Grid.Row="8" Grid.Column="1" Name="ProjectBackupFolder" />
+        <Label Grid.Row="9" Grid.Column="0">Default New File Extension (can be blank, otherwise must start with a period and contain one or more characters, all alphanumeric, after that)</Label>
+        <TextBox Grid.Row="9" Grid.Column="1" Name="DefaultFileExtension" />
+        <Label Grid.Row="10" Grid.Column="0">File Filter Patterns (separate by newline, each line must be valid regular expression)</Label>
+        <TextBox Grid.Row="10" Grid.Column="1" Style="{StaticResource multi-value}" Name="FileFilterPatterns" />
+        <Label Grid.Row="11" Grid.Column="0">Recent Projects List (separate by newline, each line must be a valid path)</Label>
+        <TextBox Grid.Row="11" Grid.Column="1" Style="{StaticResource multi-value}" Name="RecentProjectFolders" />
+        <DockPanel Grid.Row="12" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top">
+            <Button Name="OK">OK</Button>
+            <Button Name="Cancel">Cancel</Button>
+        </DockPanel>
+    </Grid>
+</Window>

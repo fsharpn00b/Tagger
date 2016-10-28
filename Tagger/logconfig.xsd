@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright 2014 FSharpN00b.
+This file is part of Tagger.
+
+Tagger is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Tagger is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Tagger.  If not, see<http://www.gnu.org/licenses/> .
+
+Tagger uses AvalonEdit, which is copyright 2014 AlphaSierraPapa for the SharpDevelop Team under the terms of the MIT License. For more information see www.avalonedit.net.-->
+
+<!--This file, logconfig.xsd, is set to be copied to the output directory, so the logconfig.xml file can find it using the following namespace declarations.
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="logconfig.xsd"-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<!--A local action is an instance of a global action. By default, the local action uses the attributes specified in the global action. That way, the user can use an action to handle multiple events without having to specify the attributes each time. Also, the attribute values of a global action can be overriden in a local action.-->
+<!--WriteToFile and UserAction use separate types for global instances and local instances. In each case, the global type has optional attributes whose values cannot be overridden in a local instance because the attributes might not be present in the global instance. In the case of GlobalUserAction, this means the attributes that the user can add to the global instance because of the anyAttribute attribute.-->
+<!--The WriteToFile element is used to write a log message to a file.-->
+  <xs:complexType name="GlobalWriteToFile">
+<!--The name attribute is used by a local instance to refer to a global instance. The value must be unique. See WriteToFileKey.-->
+    <xs:attribute name="name" type="xs:string" use="required" />
+<!--The file to write to.-->
+    <xs:attribute name="file" type="xs:string" use="required" />
+<!--Whether to append to the file or overwrite it. A value of "N" or "n" means to overwrite the file. Any other value, or no value, means to append to the file.-->
+    <xs:attribute name="append" type="xs:string" use="optional" />
+<!--A System.DateTime format string for the timestamp. For more information see:
+http://msdn.microsoft.com/en-us/library/8kb3ddd4%28v=vs.110%29.aspx
+{timestamp} is a built-in parameter that the user can include in a log message. If this attribute is omitted, the default timestamp format, "yyyyMMdd HH:mm:ss.ffff", is used.-->
+    <xs:attribute name="timestamp" type="xs:string" use="optional" />
+  </xs:complexType>
+<!--The LocalWriteToFile type extends the GlobalWriteToFile type.-->
+  <xs:complexType name="LocalWriteToFile">
+    <xs:complexContent>
+      <xs:extension base="GlobalWriteToFile">
+<!--The file to write to. Overrides the value in the global instance.-->
+        <xs:attribute name="file" type="xs:string" use="optional" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<!--The WriteToConsole element is used to write a log message to the console.-->
+  <xs:complexType name="WriteToConsole">
+<!--The name attribute is used by a local instance to refer to a global instance. The value must be unique. See WriteToConsoleKey.-->
+    <xs:attribute name="name" type="xs:string" use="required" />
+<!--See the description for the timestamp attribute of GlobalWriteToFile.-->
+    <xs:attribute name="timestamp" type="xs:string" use="optional" />
+  </xs:complexType>
+<!--The WriteToString element is used to write a log message to a string that the user can access with Logger.GetOutputString (name), where <name> is the value of the name attribute specified here.-->
+  <xs:complexType name="WriteToString">
+<!--The name attribute is used by a local instance to refer to a global instance. The value must be unique. See WriteToStringKey.-->
+    <xs:attribute name="name" type="xs:string" use="required" />
+<!--See the description for the timestamp attribute of GlobalWriteToFile.-->
+    <xs:attribute name="timestamp" type="xs:string" use="optional" />
+  </xs:complexType>
+<!--The MessageBox element is used to show a log message in a message box.-->
+  <xs:complexType name="MessageBox">
+<!--The name attribute is used by a local instance to refer to a global instance. The value must be unique. See MessageBoxKey.-->
+    <xs:attribute name="name" type="xs:string" use="required" />
+<!--See the description for the timestamp attribute of GlobalWriteToFile.-->
+    <xs:attribute name="timestamp" type="xs:string" use="optional" />
+  </xs:complexType>
+<!--The UserAction element is used to pass log data to a function exposed by a custom assembly provided by the user.-->
+  <xs:complexType name="GlobalUserAction">
+<!--The assembly attribute is used by a GlobalUserAction element to refer to a UserActionAssembly element. The value must be unique. See UserActionAssemblyKey.-->
+    <xs:attribute name="assembly" type="xs:string" use="required" />
+<!--The name attribute is used by a local instance to refer to a global instance. The value must be unique. See UserActionKey.-->
+    <xs:attribute name="name" type="xs:string" use="required" />
+<!--The function on the user assembly to pass the log data to. The function signature must be:
+Map<string, string> -> Dictionary<string, obj> -> unit
+The first parameter contains attribute name and values that the user adds to the UserAction element. For more information see the description for the anyAttribute element.
+The second parameter contains log data names and values. These are passed to the function at runtime when Logger.Log_ is called.-->
+    <xs:attribute name="function" type="xs:string" use="required" />
+<!--Allow the user to add any attribute to a UserAction element. The default value for processContents is strict, which means "the XML processor must obtain the schema for the required namespaces and validate any attribute from those namespaces". Since we don't specify a namespace, setting processContents to strict seems to prevent us from adding attributes even if we specify namespace="##any". Therefore we set processContents to skip.-->
+    <xs:anyAttribute processContents="skip"/>
+  </xs:complexType>
+<!--The LocalUserAction type extends the GlobalUserAction type.-->
+  <xs:complexType name="LocalUserAction">
+    <xs:complexContent>
+      <xs:extension base="GlobalUserAction">
+<!--The function on the user assembly to pass the log data to. Overrides the value in the global instance.-->
+        <xs:attribute name="function" type="xs:string" use="optional" />
+<!--This attribute is ignored. Because LocalUserAction extends GlobalUserAction, this attribute be required here by default. We make it optional so the user does not have to include it.-->
+        <xs:attribute name="assembly" type="xs:string" use="optional" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<!--The root element of the log configuration.-->
+  <xs:element name="config">
+<!--Note the default value for minOccurs and maxOccurs is 1.-->
+    <xs:complexType>
+      <xs:sequence>
+<!--The UserActionAssembly element is optional.-->
+        <xs:element name="UserActionAssembly" minOccurs="0">
+          <xs:complexType>
+<!--For an element to have both a value and an attribute, it seems we must specify the value type with the simpleContent element.-->
+            <xs:simpleContent>
+<!--The value is the path to the assembly.-->
+              <xs:extension base="xs:string">
+<!--The assembly attribute is used by a GlobalUserAction element to refer to a UserActionAssembly element. The value must be unique. See UserActionAssemblyKey.-->
+                <xs:attribute name="assembly" type="xs:string" use="required" />
+<!--The name of the module in the assembly that exposes the functions.-->
+                <xs:attribute name="module" type="xs:string" use="required" />
+              </xs:extension>
+            </xs:simpleContent>
+          </xs:complexType>
+        </xs:element>
+<!--The global action list.-->
+        <xs:element name="actions">
+          <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="WriteToFile" type="GlobalWriteToFile" />
+              <xs:element name="WriteToConsole" type="WriteToConsole" />
+              <xs:element name="WriteToString" type="WriteToString" />
+              <xs:element name="MessageBox" type="MessageBox" />
+<!--The global Exception element is commented out for now, because it has no attributes to override in a local instance.-->
+<!--              <xs:element name="Exception" />-->
+              <xs:element name="UserAction" type="GlobalUserAction" />
+            </xs:choice>
+          </xs:complexType>
+        </xs:element>
+<!--Events are grouped into parts.-->
+        <xs:element name="part" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="event" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+<!--The event description. This is currently used only for documentation.-->
+                    <xs:element name="description" type="xs:string" />
+<!--The actions to take for this event. For each action, you must specify a name attribute value that refers to a global action.-->
+                    <xs:element name="actions">
+                      <xs:complexType>
+                        <xs:choice minOccurs="0" maxOccurs="unbounded">
+                          <xs:element name="WriteToFile" type="LocalWriteToFile" />
+                          <xs:element name="WriteToConsole" type="WriteToConsole" />
+                          <xs:element name="WriteToString" type="WriteToString" />
+                          <xs:element name="MessageBox" type="MessageBox" />
+                          <xs:element name="Exception" />
+                          <xs:element name="UserAction" type="LocalUserAction" />
+                        </xs:choice>
+                      </xs:complexType>
+                    </xs:element>
+<!--The parameter names and values that you expect for this event.-->
+                    <xs:element name="param" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+<!--The parameter name-->
+                        <xs:attribute name="name" type="xs:string" use="required" />
+<!--The parameter description. This is currently used only for documentation.-->
+                        <xs:attribute name="description" type="xs:string" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+<!--The message to log. You can include parameter names using the { and } delimiters. At runtime, the names are replaced with the values. You can also include the following built-in parameter names: {timestamp} and {eventname}. The timestamp value is formatted using the value of the timestamp attribute you specify on the action element. The event name value is created by combining the name attribute values from the part element and the event element. For example, if the part element has a name attribute value "part1" and the event element has a name attribute value "event1", {eventname} is replaced with "part1.event1".-->
+                    <xs:element name="message" type="xs:string" />
+                  </xs:sequence>
+<!--Attributes must follow the complextype part of the element.-->
+<!--The event name. Events must have unique names within a part, though you can have the same event name in different parts. See the uniqueEvent constraint.-->
+                  <xs:attribute name="name" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+<!--The part name. Parts must have unique names. See the uniquePart constraint.-->
+            <xs:attribute name="name" type="xs:string" use="required" />
+          </xs:complexType>
+<!--Uniqueness constraints must follow the complextype part of the element.-->
+<!--Events must have unique names within a part, though you can have the same event name in different parts.-->
+          <xs:unique name="uniqueEvent">
+            <xs:selector xpath="event"/>
+            <xs:field xpath="@name"/>
+          </xs:unique>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+<!--Parts must have unique names.-->
+    <xs:unique name="uniquePart">
+      <xs:selector xpath="part"/>
+      <xs:field xpath="@name"/>
+    </xs:unique>
+<!--Key constraints.-->
+<!--Key and keyref must be in the same element together, or in the same branch of elements. Also, we can't seem to use ".." in the XPath expression, so we put these at the top level so the XPath can see the elements we need. Note that if the XPath expression is technically correct but does not match an element in a document, the schema might validate the document even if it DOES NOT obey the key constraints.
+For a correct example, see http://www.datypic.com/books/defxmlschema/chapter17.html. -->
+<!--GlobalUserAction assembly value must match UserActionAssembly assembly value. For now, the user can only provide one assembly, so it isn't strictly necessary to identify the assembly with a unique assembly attribute value. The real purpose of this constraint is to make sure the user cannot have a UserAction element without having a UserActionAssembly element.-->
+    <xs:key name="UserActionAssemblyKey">
+      <xs:selector xpath="UserActionAssembly" />
+      <xs:field xpath="@assembly" />
+    </xs:key>
+    <xs:keyref name="UserActionAssemblyKeyRef" refer="UserActionAssemblyKey">
+      <xs:selector xpath="actions/UserAction"/>
+      <xs:field xpath="@assembly"/>
+    </xs:keyref>
+<!--LocalUserAction name must match GlobalUserAction name.-->
+    <xs:key name="UserActionKey">
+      <xs:selector xpath="actions/UserAction" />
+      <xs:field xpath="@name" />
+    </xs:key>
+    <xs:keyref name="UserActionKeyRef" refer="UserActionKey">
+      <xs:selector xpath="part/event/actions/UserAction"/>
+      <xs:field xpath="@name"/>
+    </xs:keyref>
+<!--LocalWriteToFile name must match GlobalWriteToFile name.-->
+    <xs:key name="WriteToFileKey">
+      <xs:selector xpath="actions/WriteToFile" />
+      <xs:field xpath="@name" />
+    </xs:key>
+    <xs:keyref name="WriteToFileKeyRef" refer="WriteToFileKey">
+      <xs:selector xpath="part/event/actions/WriteToFile"/>
+      <xs:field xpath="@name"/>
+    </xs:keyref>
+<!--LocalWriteToConsole name must match GlobalWriteToConsole name.-->
+    <xs:key name="WriteToConsoleKey">
+      <xs:selector xpath="actions/WriteToConsole" />
+      <xs:field xpath="@name" />
+    </xs:key>
+    <xs:keyref name="WriteToConsoleKeyRef" refer="WriteToConsoleKey">
+      <xs:selector xpath="part/event/actions/WriteToConsole"/>
+      <xs:field xpath="@name"/>
+    </xs:keyref>
+<!--LocalWriteToConsole name must match GlobalWriteToConsole name.-->
+    <xs:key name="WriteToStringKey">
+      <xs:selector xpath="actions/WriteToString" />
+      <xs:field xpath="@name" />
+    </xs:key>
+    <xs:keyref name="WriteToStringKeyRef" refer="WriteToStringKey">
+      <xs:selector xpath="part/event/actions/WriteToString"/>
+      <xs:field xpath="@name"/>
+    </xs:keyref>
+<!--LocalMessageBox name must match GlobalMessageBox name.-->
+    <xs:key name="MessageBoxKey">
+      <xs:selector xpath="actions/MessageBox" />
+      <xs:field xpath="@name" />
+    </xs:key>
+    <xs:keyref name="MessageBoxKeyRef" refer="MessageBoxKey">
+      <xs:selector xpath="part/event/actions/MessageBox"/>
+      <xs:field xpath="@name"/>
+    </xs:keyref>
+  </xs:element>
+</xs:schema>
+      

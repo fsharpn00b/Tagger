@@ -1,0 +1,62 @@
+﻿<!--Copyright 2014 FSharpN00b.
+This file is part of Tagger.
+
+Tagger is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Tagger is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Tagger.  If not, see<http://www.gnu.org/licenses/> .
+
+Tagger uses AvalonEdit, which is copyright 2014 AlphaSierraPapa for the SharpDevelop Team under the terms of the MIT License. For more information see www.avalonedit.net.-->
+<!--Always rebuild solution when you change XAML.-->
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        SizeToContent="WidthAndHeight"
+        Title="Open URL"
+        WindowStartupLocation="CenterScreen"
+        MinWidth="300"
+        >
+  <Window.Resources>
+    <Style TargetType="Label">
+      <Setter Property="VerticalAlignment" Value="Top" />
+    </Style>
+    <Style TargetType="Button">
+      <Setter Property="MinWidth" Value="50" />
+      <Setter Property="Margin" Value="5" />
+    </Style>
+  </Window.Resources>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition />
+      <RowDefinition />
+      <RowDefinition />
+      <RowDefinition />
+      <RowDefinition />
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+<!--Auto means use as much space as needed by the controls. Star means use whatever space remains, divided into the portions specified (i.e. two controls that each use "1*" will split the space evenly).-->
+      <ColumnDefinition Width="Auto" />
+      <ColumnDefinition Width="1*" />
+    </Grid.ColumnDefinitions>
+    <Label Grid.Row="0" Grid.Column="0">Open in tab:</Label>
+    <DockPanel Grid.Row="0" Grid.Column="1">
+      <RadioButton GroupName="OpenUrlTab" Name="First">First</RadioButton>
+      <RadioButton GroupName="OpenUrlTab" Name="Last">Last</RadioButton>
+      <RadioButton GroupName="OpenUrlTab" Name="Next" IsChecked="True">Next to selected tab</RadioButton>
+    </DockPanel>
+    <CheckBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Name="SwitchToExistingTab">Switch to existing tab with this URL if available</CheckBox>
+    <CheckBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Name="SwitchToNewTab">Switch to new tab</CheckBox>
+    <CheckBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Name="OpenInStandBy">Open new tab in standby mode</CheckBox>
+    <DockPanel Grid.Row="4" Grid.Column="1" HorizontalAlignment="Right">
+      <Button Name="OK">OK</Button>
+      <Button Name="Cancel">Cancel</Button>
+    </DockPanel>
+  </Grid>
+</Window>

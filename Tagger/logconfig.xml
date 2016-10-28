@@ -1,0 +1,557 @@
+<?xml version = "1.0" ?>
+<!--Copyright 2014 FSharpN00b.
+This file is part of Tagger.
+
+Tagger is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Tagger is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Tagger.  If not, see<http://www.gnu.org/licenses/> .
+
+Tagger uses AvalonEdit, which is copyright 2014 AlphaSierraPapa for the SharpDevelop Team under the terms of the MIT License. For more information see www.avalonedit.net.-->
+
+<!--This file, logconfig.xml, is set to be copied to the output directory, so the application can find it using Directory.GetCurrentDirectory.-->
+<!--Note the following noNamespaceSchemaLocation value requires logconfig.xsd to be present in the output directory. We handle this as follows.
+1. Add logconfig.xsd to the project.
+2. In the Properties window for logconfig.xsd, set Copy to Output Directory to Copy Always.-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="logconfig.xsd">
+  <actions>
+<!--The default append value is "Y". The default timestamp value is "yyyyMMdd HH:mm:ss".-->
+    <WriteToFile name="default" file="log.txt" />    
+    <MessageBox name="default" />
+  </actions>
+  <part name="Program">
+<!--These events are critical errors.-->
+<!--This version of the UnhandledException event includes the stack trace and is written to file only.-->
+    <event name="UnhandledExceptionFile">
+      <description>Unhandled exception.</description>
+      <actions>
+        <WriteToFile name="default" />
+      </actions>
+      <param name="shutdown" description="True if the application information was saved."/>
+      <param name="message" description="The error message." />
+      <param name="stack_trace" description="The stack trace."/>
+<!--We do not follow an exception message with a period because the message usually includes one.-->
+      <message>{timestamp} {eventname} Unhandled exception.
+Application information saved: {shutdown}.
+Message: {message}
+Stack trace: {stack_trace}.</message>
+    </event>
+<!--This version of the UnhandledException event does not include the stack trace and is shown in a message box only.-->
+    <event name="UnhandledExceptionAlert">
+      <description>Unhandled exception.</description>
+      <actions>
+        <MessageBox name="default" />
+      </actions>
+      <param name="shutdown" description="True if the application information was saved."/>
+      <param name="message" description="The error message." />
+      <message>{timestamp} {eventname} Unhandled exception.
+Application information saved: {shutdown}.
+Message: {message}</message>
+    </event>
+  </part>
+  <part name="Configuration">
+<!--These events are non-critical errors.-->
+    <event name="LoadConfigurationError">
+      <description>Unable to load the configuration file.</description>
+      <actions>
+        <WriteToFile name="default" />
+        <MessageBox name="default" />
+      </actions>
+      <param name="path" description="The configuration file path." />
+      <param name="message" description="The error message." />
+      <message>{timestamp} {eventname} Error loading configuration file: {path}. Message: {message}</message>
+    </event>
+    <event name="SaveConfigurationError">
+      <description>Unable to save the configuration file.</description>
+      <actions>
+        <WriteToFile name="default" />
+        <MessageBox name="default" />
+      </actions>
+      <param name="path" description="The configuration file path." />
+      <param name="message" description="The error message." />
+      <message>{timestamp} {eventname} Error saving configuration file: {path}. Message: {message}</message>
+    </event>
+<!--These events are informational.-->
+    <event name="LoadConfiguration">
+      <description>The application loaded the configuration file.</description>
+      <actions>
+        <WriteToFile name="default" />
+      </actions>
+      <param name="path" description="The configuration file path." />
+      <message>{timestamp} {eventname} Loaded configuration file: {path}.</message>
+    </event>
+    <event name="SaveConfiguration">
+      <description>The application saved the configuration file.</description>
+      <actions>
+        <WriteToFile name="default" />
+      </actions>
+      <param name="path" description="The configuration file path." />
+      <message>{timestamp} {eventname} Saved configuration file: {path}.</message>
+    </event>  
+  </part>
+  <part name="ProjectController">
+<!--These events are non-critical errors.-->
+    <event name="OpenProjectInformationNotFound">
+      <description>The project information file was not found.</description>
+      <actions>
+        <WriteToFile name="default" />
+      </actions>
+      <param name="path" description="The project information file path." />
+      <message>{timestamp} {eventname} Project information file not found: {path}.</message>
+    </event>
+    <event name="OpenProjectInformationError">
+      <description>Unable to open the project information file.</description>
+      <actions>
+        <WriteToFile name="default" />
+        <MessageBox name="default" />
+      </actions>
+      <param name="path" description="The project information file path." />
+      <param name="message" description="The error message." />
+      <message>{timestamp} {eventname} Error opening project information file: {path}. Message: {message}</message>
+    </event>
+    <event name="NewProjectCreateDirectoryError">
+      <description>Unable to create the new project folder due to an error.</description>
+      <actions>
+        <WriteToFile name="default" />
+        <MessageBox name="default" />
+      </actions>
+      <param name="path" description="The project folder path." />
+      <param name="message" description="The error message." />
+      <message>{timestamp} {eventname} Error creating new project folder: {path}. Message: {message}</message>
+    </event>
+    <event name="SaveProjectInformationError">
+      <description>Unable to save the project information file.</description>
+      <actions>
+        <WriteToFile name="default" />
+        <MessageBox name="default" />
+      </actions>
+      <param name="path" description="The project information file path." />
+      <param name="message" description="The error message." />
+      <message>{timestamp} {eventname} Error saving project information file: {path}. Message: {message}</message>
+    </event>
+<!--These events are informational.-->
+    <event name="OpenProjectInformation">
+      <description>The user opened a project.</description>
+      <actions>
+        <WriteToFile name="default" />
+      </actions>
+      <param name="path" description="The path of the project." />
+      <message>{timestamp} {eventname} Opened project {path}.</message>
+    </event>
+    <event name="SaveProjectInformation">
+      <description>The user saved a project.</description>
+      <actions>
+        <WriteToFile name="default" />
+      </actions>
+      <param name="path" description="The path of the project." />
+      <message>{timestamp} {eventname} Saved project {path}.</message>
+    </event> 
+  </part>
+  <part name="FileTreeViewController">
+<!--These events are non-critical errors.-->
+    <event name="OpenProjectFolderNotFound">
+      <description>The project folder was not found.</description>
+      <actions>
+        <WriteToFile name="default" />
+        <MessageBox name="default" />
+      </actions>
+      <param name="path" description="The project folder path." />
+      <message>{timestamp} {eventname} Project folder not found: {path}.</message>
+    </event>
+    <event name="NewFileCreateDirectoryError">
+      <description>The directory to which the new file was to be added does not exist, and we were unable to create it.</description>
+      <actions>
+        <WriteToFile name="default" />
+        <MessageBox name="default" />
+      </actions>
+      <param name="path" description="The directory to which the new file was to be added." />
+      <param name="message" description="The error message." />
+      <message>{timestamp} {eventname} Error adding new file to directory: {path}. Directory does not exist and we were unable to create it. Message: {message}</message>
+    </event>
+    <event name="NewFileCreateFileError">
+      <description>Unable to create new file.</description>
+      <actions>
+        <WriteToFile name="default" />
+        <MessageBox name="default" />
+      </actions>
+      <param name="path" description="The path of the new file." />
+      <param name="message" description="The error message." />
+      <message>{timestamp} {eventname} Error creating new file: {path}. Message: {message}</message>
+    </event>
+    <event name="NewFolderCreateDirectoryError">
+      <description>Unable to create new folder.</description>
+      <actions>
+        <WriteToFile name="default" />
+        <MessageBox name="default" />
+      </actions>
+      <param name="path" description="The path of the new folder." />
+      <param name="message" description="The error message." />
+      <message>{timestamp} {eventname} Error creating new folder: {path}. Message: {message}</message>
+    </event>
+    <event name="RenameFileIOError">
+      <description>Unable to rename file, possibly because the file is in use by another process.</description>
+      <actions>
+        <WriteToFile name="default" />
+        <MessageBox name="default" />
+      </actions>
+      <param name="path" description="The path of the file." />
+      <param name="name" description="The proposed new name for the file." />
+      <param name="message" description="The error message." />
+      <message>{timestamp} {eventname} Error renaming file: {path} to name: {name}. This might be because the file is in use, or because another file with the proposed new name already exists. If you have the file open for editing, please try closing it before renaming it. Message: {message}</message>
+    </event>
+    <event name="RenameFileError">
+      <description>Unable to rename file.</description>
+      <actions>
+        <WriteToFile name="default" />
+        <MessageBox name="default" />
+      </actions>
+      <param name="path" description="The path of the file." />
+      <param name="name" description="The proposed new name for the file." />
+      <param name="message" description="The error message." />
+      <message>{timestamp} {eventname} Error renaming file: {path} to name: {name}. Message: {message}</message>
+    </event>
+<!--These events are informational.-->
+    <event name="DragDrop">
+      <description>The user dragged and dropped one node onto another.</description>
+      <actions>
+        <WriteToFile name="default" />
+      </actions>
+      <param name="source_path" description="The path of the source node." />
+      <param name="target_path" description="The path of the target node." />
+      <message>{timestamp} {eventname} Item {source_path} drag/dropped on item {target_path}.</message>
+    </event>
+    <event name="OpenProject">
+      <description>The user opened a project.</description>
+      <actions>
+        <WriteToFile name="default" />
+      </actions>
+      <param name="path" description="The path of the project." />
+      <message>{timestamp} {eventname} Opened project {path}.</message>
+    </event>
+  </part>
+  <part name="PaneController">
+<!--These events are non-critical errors.-->
+    <event name="OpenFileError">
+      <description>Unable to open the specified file.</description>
+      <actions>
+        <WriteToFile name="default" />
+        <MessageBox name="default" />
+      </actions>
+      <param name="path" description="The file path." />
+      <param name="message" description="The error message." />
+      <message>{timestamp} {eventname} Error opening file: {path}. Message: {message}</message>
+    </event>
+    <event name="SaveFileError">
+      <description>Unable to save the specified file.</description>
+      <actions>
+        <WriteToFile name="default" />
+        <MessageBox name="default" />
+      </actions>
+      <param name="path" description="The file path." />
+      <param name="message" description="The error message." />
+      <message>{timestamp} {eventname} Error saving file: {path}. Message: {message}</message>
+    </event>
+    <event name="EditorGeneralError">
+      <description>The Editor reported an error.</description>
+      <actions>
+        <WriteToFile name="default" />
+        <MessageBox name="default" />
+      </actions>
+      <param name="message" description="The error message." />
+      <message>{timestamp} {eventname} Editor reported an error. Message: {message}</message>
+    </event>
+  </part>
+  <part name="TagController">
+<!--These events are non-critical errors.-->
+    <event name="CopyTextDifferentPaneError">
+      <description>Error copying text between panes.</description>
+      <actions>
+        <WriteToFile name="default" />
+        <MessageBox name="default" />
+      </actions>
+      <param name="source_path" description="The source file path." />
+      <param name="target_path" description="The target file path." />
+      <param name="source_length" description="The source file length."/>
+      <param name="copy_length" description="The length of the copied text."/>
+      <param name="target_length" description="The target file length."/>
+      <param name="result" description="The result of Abs (target file length - copied text length - source file length)."/>
+      <message>{timestamp} {eventname} Error copying text from file: {source_path} to file: {target_path}. Source file length: {source_length}. Copied text length: {copy_length}. Target file length: {target_length}. Expected result of Abs (target file length - copied text length - source file length): 0. Actual result: {result}.</message>
+    </event>
+    <event name="MoveTextDifferentPaneError">
+      <description>Error moving text between panes.</description>
+      <actions>
+        <WriteToFile name="default" />
+        <MessageBox name="default" />
+      </actions>
+      <param name="source_path" description="The source file path." />
+      <param name="target_path" description="The target file path." />
+      <param name="length_1" description="The combined file length before the move."/>
+      <param name="length_2" description="The combined file length after the move."/>
+      <param name="result" description="The result of Abs (combined file length after move - combined file length before move)."/>
+      <message>{timestamp} {eventname} Error moving text from file: {source_path} to file: {target_path}. Combined file length before move: {length_1}. Combined file length after move: {length_2}. Expected result of Abs (combined file length after move - combined file length before move): 0. Actual result: {result}.</message>
+    </event>
+    <event name="CopyTextSamePaneError">
+      <description>Error copying text in the same pane.</description>
+      <actions>
+        <WriteToFile name="default" />
+        <MessageBox name="default" />
+      </actions>
+      <param name="path" description="The file path." />
+      <param name="length_1" description="The file length before the copy."/>
+      <param name="copy_length" description="The length of the copied text."/>
+      <param name="length_2" description="The file length after the copy."/>
+      <param name="result" description="The result of Abs (file length after copy - copied text length - file length before copy)."/>
+      <message>{timestamp} {eventname} Error copying text in file: {path}. File length before copy: {length_1}. Copied text length: {copy_length}. File length after copy: {length_2}. Expected result of Abs (file length after copy - copied text length - file length before copy): 0. Actual result: {result}.</message>
+    </event>
+    <event name="MoveTextSamePaneError">
+      <description>Error moving text in the same pane.</description>
+      <actions>
+        <WriteToFile name="default" />
+        <MessageBox name="default" />
+      </actions>
+      <param name="path" description="The file path." />
+      <param name="length_1" description="The file length before the move."/>
+      <param name="length_2" description="The file length after the move."/>
+      <param name="result" description="The result of Abs (file length after move - file length before move)."/>
+      <message>{timestamp} {eventname} Error moving text in file: {path}. File length before move: {length_1}. File length after move: {length_2}. Expected result of Abs (file length after move - file length before move): 0. Actual result: {result}.</message>
+    </event>
+    <event name="MoveTextToClosedFileError">
+      <description>Unable to append text to the specified file.</description>
+      <actions>
+        <WriteToFile name="default" />
+        <MessageBox name="default" />
+      </actions>
+      <param name="path" description="The file path." />
+      <param name="message" description="The error message." />
+      <message>{timestamp} {eventname} Error appending text to file: {path}. Message: {message}</message>
+    </event>
+    <event name="OpenFileError">
+      <description>Unable to open the specified file to search for tags.</description>
+      <actions>
+        <WriteToFile name="default" />
+        <MessageBox name="default" />
+      </actions>
+      <param name="path" description="The file path." />
+      <param name="message" description="The error message." />
+      <message>{timestamp} {eventname} Error opening file: {path}. Message: {message}</message>
+    </event>
+    <event name="AddTagWindowError">
+      <description>The Add Tag Window reported an error.</description>
+      <actions>
+        <WriteToFile name="default" />
+        <MessageBox name="default" />
+      </actions>
+      <param name="message" description="The error message." />
+      <message>{timestamp} {eventname} Add Tag Window: {message}</message>
+    </event>
+  </part>
+  <part name="MainController">
+<!--These events are non-critical errors.-->
+    <event name="ProjectBackupCompression">
+      <description>Unable to compress the specified project folder to the specified zip file path.</description>
+      <actions>
+        <WriteToFile name="default" />
+        <MessageBox name="default" />
+      </actions>
+      <param name="project_folder" description="The project folder." />
+      <param name="zip_file_path" description="The zip file path." />
+      <param name="message" description="The error message." />
+      <message>{timestamp} {eventname} Unable to compress project folder: {project_folder} to zip file path: {zip_file_path}: {message}</message>
+    </event>
+    <event name="ProjectBackupFolderLookup">
+      <description>Unable to get the project backup folder from the configuration.</description>
+      <actions>
+        <WriteToFile name="default" />
+        <MessageBox name="default" />
+      </actions>
+      <message>{timestamp} {eventname} Unable to get project backup folder from configuration.</message>
+    </event>
+    <event name="ProjectBackupCurrentFolder">
+      <description>Unable to get the current project folder name.</description>
+      <actions>
+        <WriteToFile name="default" />
+        <MessageBox name="default" />
+      </actions>
+      <param name="project_folder" description="The project folder." />
+      <param name="message" description="The error message." />
+      <message>{timestamp} {eventname} Unable to get current project folder name: {project_folder}: {message}</message>
+    </event>
+    <event name="NoProjectOpen">
+      <description>A command was received from the add-on server but could not be handled because no project is open.</description>
+      <actions>
+        <WriteToFile name="default" />
+        <MessageBox name="default" />
+      </actions>
+      <param name="command" description="The command." />
+      <message>{timestamp} {eventname} Unable to handle add-on server command: {command}. No project is currently open.</message>
+    </event>
+  </part>
+  <part name="AddOnServer">
+<!--These events are non-critical errors.-->
+    <event name="OpenConnectionError">
+      <description>The add-on server was unable to process an incoming connection.</description>
+      <actions>
+        <WriteToFile name="default" />
+        <MessageBox name="default" />
+      </actions>
+      <param name="message" description="The error message." />
+      <message>{timestamp} {eventname} Error processing incoming connection. Message: {message}</message>
+    </event>
+    <event name="StartListenError">
+      <description>The add-on server was unable to listen for incoming connections.</description>
+      <actions>
+        <WriteToFile name="default" />
+        <MessageBox name="default" />
+      </actions>
+      <param name="message" description="The error message." />
+      <message>{timestamp} {eventname} Error listening for incoming connections. Message: {message}</message>
+    </event>
+    <event name="SendMessageError">
+      <description>The add-on server was unable to send a message.</description>
+      <actions>
+        <WriteToFile name="default" />
+        <MessageBox name="default" />
+      </actions>
+      <param name="message" description="The message." />
+      <param name="error_message" description="The error message." />
+      <message>{timestamp} {eventname} Error sending message: {message}. Error message: {error_message}</message>
+    </event>
+    <event name="SendTestMessageError">
+      <description>The add-on server was unable to send a test message to determine whether the connection was still open.</description>
+      <actions>
+        <WriteToFile name="default" />
+        <MessageBox name="default" />
+      </actions>
+      <param name="error_message" description="The error message." />
+      <message>{timestamp} {eventname} Error sending test message to determine whether connection is still open. Error message: {error_message}</message>
+    </event>
+    <event name="ReceiveMessageError">
+      <description>The add-on server was unable to receive a message.</description>
+      <actions>
+        <WriteToFile name="default" />
+        <MessageBox name="default" />
+      </actions>
+      <param name="error_message" description="The error message." />
+      <message>{timestamp} {eventname} Error receiving message. Error message: {error_message}</message>
+    </event>
+    <event name="StopListenError">
+      <description>The add-on server took too long to close a connection.</description>
+      <actions>
+        <WriteToFile name="default" />
+        <MessageBox name="default" />
+      </actions>
+      <message>{timestamp} {eventname} Timed out waiting to close connection.</message>
+    </event>
+<!--These events are informational.-->
+    <event name="Start">
+      <description>The add-on server started.</description>
+      <actions>
+        <WriteToFile name="default" />
+      </actions>
+      <message>{timestamp} {eventname} The add-on server started.</message>
+    </event>
+    <event name="Stop">
+      <description>The add-on server stopped.</description>
+      <actions>
+        <WriteToFile name="default" />
+      </actions>
+      <message>{timestamp} {eventname} The add-on server stopped.</message>
+    </event>
+    <event name="StartListen">
+      <description>The add-on server is listening for incoming connections.</description>
+      <actions>
+        <WriteToFile name="default" />
+      </actions>
+      <message>{timestamp} {eventname} The add-on server is listening for incoming connections.</message>
+    </event>
+    <event name="StopListen">
+      <description>The add-on server stopped listening for incoming connections.</description>
+      <actions>
+        <WriteToFile name="default" />
+      </actions>
+      <message>{timestamp} {eventname} The add-on server stopped listening for incoming connections.</message>
+    </event>
+    <event name="OpenConnection">
+      <description>The add-on server is connected.</description>
+      <actions>
+        <WriteToFile name="default" />
+      </actions>
+      <message>{timestamp} {eventname} The add-on server is connected.</message>
+    </event>
+    <event name="CloseConnection">
+      <description>The add-on server has closed or lost a connection.</description>
+      <actions>
+        <WriteToFile name="default" />
+      </actions>
+      <message>{timestamp} {eventname} The add-on server has closed or lost a connection.</message>
+    </event>
+    <event name="SendMessage">
+      <description>The add-on server sent a message.</description>
+      <actions>
+        <WriteToFile name="default" />
+      </actions>
+      <param name="message" description="The message." />
+      <message>{timestamp} {eventname} The add-on server sent a message: {message}.</message>
+    </event>
+    <event name="ReceiveMessage">
+      <description>The add-on server received a message.</description>
+      <actions>
+        <WriteToFile name="default" />
+      </actions>
+      <param name="message" description="The message." />
+      <message>{timestamp} {eventname} The add-on server received a message: {message}.</message>
+    </event>
+  </part>
+  <part name="AddOnServerController">
+<!--These events are non-critical errors.-->
+    <event name="InvalidMessageError">
+      <description>The add-on server received a message it did not understand.</description>
+      <actions>
+        <WriteToFile name="default" />
+        <MessageBox name="default" />
+      </actions>
+      <param name="message" description="The received message." />
+      <param name="error_message" description="The error message." />
+      <message>{timestamp} {eventname} Error parsing received message: {message}. Error message: {error_message}</message>
+    </event>
+    <event name="InvalidCommandError">
+      <description>The add-on server received or tried to send a message that contained a command it did not understand, or contained one or more parameters with the wrong types.</description>
+      <actions>
+        <WriteToFile name="default" />
+        <MessageBox name="default" />
+      </actions>
+      <param name="command" description="The command." />
+      <param name="incoming" description="True if the message was incoming; false if it was outgoing." />
+      <message>{timestamp} {eventname} Invalid command or wrong parameter type(s). Command: {command}. Parameters: {parameters}. Incoming: {incoming}.</message>
+    </event>
+    <event name="MissingParameterError">
+      <description>The add-on server received or tried to send a command that was missing a parameter.</description>
+      <actions>
+        <WriteToFile name="default" />
+        <MessageBox name="default" />
+      </actions>
+      <param name="command" description="The command." />
+      <param name="name" description="The expected parameter name." />
+      <param name="incoming" description="True if the message was incoming; false if it was outgoing." />
+      <message>{timestamp} {eventname} Missing parameter. Command: {command}. Expected parameter: {name}. Incoming: {incoming}.</message>
+    </event>
+    <event name="FileNotOpen">
+      <description>The add-on server received a command that referred to a pane with no file currently open.</description>
+      <actions>
+        <WriteToFile name="default" />
+        <MessageBox name="default" />
+      </actions>
+      <param name="command" description="The command." />
+      <param name="pane" description="The pane referenced by the command." />
+      <message>{timestamp} {eventname} Command referenced pane with no file open. Command: {command}. Pane: {pane}.</message>
+    </event>
+  </part>
+  </config>
