@@ -20,19 +20,22 @@ I wrote Tagger to gain practice in F# and WPF. Also, I wanted an editing tool th
 
 - Select multiple lines that are not contiguous, and copy or move them to another place in the same file, or to another file.
 
-This documentation is still a work in progress. If you have any issues please send mail to fsharpn00b@users.sourceforge.net.
-
 *
 
 Getting Started
 
 NOTE Tagger is a Windows application and requires the .NET Framework 4.5, which you can get here.
+
 http://www.microsoft.com/en-us/download/details.aspx?id=30653
+
 Tagger is portable. It requires no installation process, and it creates no registry entries.
 
 The Tagger application consists of three panes.
+
 1. To the left is the project pane. You can click the expander arrow (< or >) to the left of this pane to show or hide it.
+
 2. In the center is the left editing pane.
+
 3. To the right is the right editing pane. You can click the expander arrow (< or >) to the right of this pane to show or hide it. When the right editing pane is shown, you can grab the vertical splitter between the two editing panes and drag it left or right to change the amount of screen space given to each of them. If you hide the right editing pane, it will remember the position of the splitter the next time you show it.
 
 When you start Tagger, the project pane contains the text "No project loaded". Right-click on this text and a context menu appears with the following items.
